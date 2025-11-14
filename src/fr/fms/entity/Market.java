@@ -27,6 +27,7 @@ public class Market {
 
 		System.out.println("Select a product :");
 		String newProduct = scan.nextLine();
+		System.out.println(shop.getProduct(newProduct));
 		
 		if (shop.getProduct(newProduct) != null) {
 			System.out.println("Select a quantity :");

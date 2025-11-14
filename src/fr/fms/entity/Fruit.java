@@ -3,8 +3,11 @@ package fr.fms.entity;
 import java.time.*;
 
 public class Fruit extends Product implements IConsumable {
-	public Fruit(String _name, float _price, String _amount, int _stockQuantity, LocalDate _date, int _lifespan) {
+	private int daysToMaturity;
+	
+	public Fruit(String _name, float _price, String _amount, int _stockQuantity, LocalDate _date, int _lifespan, int _daysToMaturity) {
 		super(_name, _price, _amount, _stockQuantity, _date, _lifespan);
+		this.daysToMaturity = _daysToMaturity;
 	}
 	
 	@Override
@@ -14,7 +17,7 @@ public class Fruit extends Product implements IConsumable {
 	
 	@Override
 	public boolean isRipe() {
-		return LocalDate.now().isAfter(this.getDate().plusDays(this.getLifespan()));
+		return LocalDate.now().isEqual(this.getDate().plusDays(daysToMaturity));
 	}
 	
 	@Override
@@ -24,7 +27,7 @@ public class Fruit extends Product implements IConsumable {
 	
 	@Override
 	public int getDaysRemaining(LocalDate _date) {
-		if (isRipe())
+		if (isExpired(calculateExpirationDate()))
 			return 0;
 		
 		int days = 0;
@@ -36,5 +39,10 @@ public class Fruit extends Product implements IConsumable {
 		}
 		
 		return days;
+	}
+	
+	@Override
+	public String toString() {
+		return this.getName() + " " + this.getDate().plusDays(this.getLifespan()) + " (" + this.getDaysRemaining(LocalDate.now()) + " days left)";
 	}
 }
